@@ -40,19 +40,19 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         
         // #4) Handle all Header fields
         JSONObject header = new JSONObject();
-        header.put("documentType", documentType);
-        header.put("featureID", featureTemplateBean.getFeatureID());
-        header.put("featureVariantID", featureTemplateBean.getFeatureVariantID());
-        header.put("transactionID",transactionID);
-        header.put("version", version);
-        header.put("documentID",documentID);
-        header.put("effectiveFromTimestamp", effectiveFromTimestamp);
-        header.put("effectiveTillTimestamp", "");
-        header.put("status", "1");
+        header.put("DocumentType", documentType);
+        header.put("FeatureID", featureTemplateBean.getFeatureID());
+        header.put("FeatureVariantID", featureTemplateBean.getFeatureVariantID());
+        header.put("TransactionID",transactionID);
+        header.put("Version", version);
+        header.put("DocumentID",documentID);
+        header.put("EffectiveFromTimestamp", effectiveFromTimestamp);
+        header.put("EffectiveTillTimestamp", "");
+        header.put("Status", "1");
         
         JSONObject document = new JSONObject();
-        document.put("header", header);
-        document.put("data", data);
+        document.put("Header", header);
+        document.put("Data", data);
 
         
         // #5) Convert JSONObject to couchbase JsonObject
