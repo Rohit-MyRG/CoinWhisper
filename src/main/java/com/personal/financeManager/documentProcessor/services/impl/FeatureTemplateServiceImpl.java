@@ -1,7 +1,5 @@
 package com.personal.financeManager.documentProcessor.services.impl;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
-
 import java.util.List;
 
 import org.json.JSONObject;
@@ -53,8 +51,8 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         header.put("Status", "1");
         
         JSONObject document = new JSONObject();
-        document.put("header", header);
-        document.put("data", data);
+        document.put("Header", header);
+        document.put("Data", data);
 
         
         // #5) Convert JSONObject to couchbase JsonObject
