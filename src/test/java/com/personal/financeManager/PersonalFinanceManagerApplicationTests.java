@@ -1,10 +1,10 @@
-package com.personal.financemanager.personalfinancemanager;
+package com.personal.financeManager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class PersonalfinancemanagerApplicationTests {
+class PersonalFinanceManagerApplicationTests {
 
 	@Test
 	void contextLoads() {
