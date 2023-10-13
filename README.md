@@ -1,5 +1,7 @@
 # CoinWhisper
 
+Please always read the conventions.
+
 ## 1. Cloning & branching
 1) Clone the repo using git/terminal.
    ```
