@@ -31,19 +31,18 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         JSONObject data = new JSONObject(featureTemplateBean.getData());
         
         // #3) Generate DocumentID
-        String transactionID = Long.toString(System.currentTimeMillis());
-        String effectiveFromTimestamp = transactionID;
+       
+        String effectiveFromTimestamp = Long.toString(System.currentTimeMillis());
         String documentType = "1"; // 1 is for Template documents
         String version = "000"; // Replace with the appropriate version
-        String documentID = String.format("%s:%s:%s:%s:%s", documentType, featureTemplateBean.getFeatureID(), 
-        featureTemplateBean.getFeatureVariantID(), transactionID, version);
+        String documentID = String.format("%s:%s:%s:%s", documentType, featureTemplateBean.getFeatureID(), 
+        featureTemplateBean.getFeatureVariantID(),version);
         
         // #4) Handle all Header fields
         JSONObject header = new JSONObject();
         header.put("DocumentType", documentType);
         header.put("FeatureID", featureTemplateBean.getFeatureID());
         header.put("FeatureVariantID", featureTemplateBean.getFeatureVariantID());
-        header.put("TransactionID",transactionID);
         header.put("Version", version);
         header.put("DocumentID",documentID);
         header.put("EffectiveFromTimestamp", effectiveFromTimestamp);
@@ -66,7 +65,6 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         SuccessResponse response = new SuccessResponse();
         response.setFeatureID(featureTemplateBean.getFeatureID());
         response.setFeatureVariantID(featureTemplateBean.getFeatureVariantID());
-        response.setTransactionID(transactionID);  
         response.setDocumentID(documentID);   
         response.setMessage("Document Inserted");
 
