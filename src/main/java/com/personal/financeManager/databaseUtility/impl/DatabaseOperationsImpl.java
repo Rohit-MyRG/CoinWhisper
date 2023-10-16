@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
 import com.couchbase.client.java.Bucket;
 import com.couchbase.client.java.Cluster;
 import com.couchbase.client.java.json.JsonObject;
@@ -35,6 +36,15 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
                 InsertOptions.insertOptions().timeout(Duration.ofMinutes(5)));
         System.out.println("Mutation Result: "+mutationResult.mutationToken());
     }
+    
+    public void createTransactionByDocumentId(String documentId, JsonObject jsonObject) {
+        Cluster cluster = databaseConnection.getConnection();
+        Bucket bucket = cluster.bucket(transactionBucketName);
+        MutationResult mutationResult = bucket.defaultCollection().insert(documentId, jsonObject,
+                InsertOptions.insertOptions().timeout(Duration.ofMinutes(5)));
+        System.out.println("Mutation Result: "+mutationResult.mutationToken());    
+    }
+
 
     public List<JsonObject> executeQuery(String query) {
         Cluster cluster = databaseConnection.getConnection();

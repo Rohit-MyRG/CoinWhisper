@@ -16,6 +16,15 @@ public interface DatabaseOperations {
      */
     public void createFeatureTemplateByDocumentId(String documentId, JsonObject jsonObject);
 
+    
+    /**
+     * Create transaction document
+     * @param documentId
+     * @param jsonObject
+     */
+    public void createTransactionByDocumentId(String documentId, JsonObject jsonObject);
+
+    
     /**
      * It will get the query as a string and return the result in list of JsonObject.
      * @param query
