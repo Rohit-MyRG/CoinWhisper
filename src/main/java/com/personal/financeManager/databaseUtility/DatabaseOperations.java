@@ -15,7 +15,6 @@ public interface DatabaseOperations {
      * @param jsonObject
      */
     public void createFeatureTemplateByDocumentId(String documentId, JsonObject jsonObject);
-
        
     /**
      * It will get the query as a string and return the result in list of JsonObject.
