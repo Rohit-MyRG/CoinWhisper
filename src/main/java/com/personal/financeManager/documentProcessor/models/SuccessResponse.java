@@ -12,5 +12,6 @@ public class SuccessResponse {
 	private String featureVariantID;
 	private String transactionID;
 	private String documentID;
+	private String dataEntityID;
 	private String message;
 }
