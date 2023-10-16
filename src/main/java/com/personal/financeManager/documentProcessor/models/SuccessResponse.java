@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class SuccessResponse {
 	private String featureID;
 	private String featureVariantID;
+	private String transactionID;
 	private String documentID;
 	private String message;
 }

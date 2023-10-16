@@ -36,7 +36,7 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
                 InsertOptions.insertOptions().timeout(Duration.ofMinutes(5)));
         System.out.println("Mutation Result: "+mutationResult.mutationToken());
     }
-    
+
     public List<JsonObject> executeQuery(String query) {
         Cluster cluster = databaseConnection.getConnection();
         QueryResult result = cluster.query(query,QueryOptions.queryOptions().timeout(Duration.ofMinutes(20)));
