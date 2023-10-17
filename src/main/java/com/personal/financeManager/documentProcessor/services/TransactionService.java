@@ -9,7 +9,7 @@ import com.personal.financeManager.documentProcessor.models.TransactionBean;
 public interface TransactionService {
 	
 	 /**
-     * Create Transaction document in the {@code Resource} bucket for the {@code Data Entity} and {@code Transaction document}.
+     * Create Transaction document in the {@code Transaction} bucket.
      * 
      * @param transactionBean The {@code TransactionBean} instance.
      * @return ResponseBodyBean instance with {@code ResponseEntity}

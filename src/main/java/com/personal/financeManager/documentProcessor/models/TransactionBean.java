@@ -10,7 +10,6 @@ import lombok.Data;
 @Data
 public class TransactionBean {
 
-	 @NotBlank(message = "transactionID cannot be null or blank")
 	 private String transactionID;
 	  
 	 @NotBlank(message = "featureID cannot be null or blank")
