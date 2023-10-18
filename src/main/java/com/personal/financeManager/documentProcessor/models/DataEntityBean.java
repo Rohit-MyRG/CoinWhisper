@@ -20,11 +20,11 @@ public class DataEntityBean {
 	@NotBlank(message = "featureVariantID cannot be null or blank")
 	private String featureVariantID;
 	
-	@NotBlank(message = "datEntityID cannot be null or blank")
 	private String dataEntityID;
-	
+		
 	@NotEmpty(message = "data cannot be null or empty")
 	private Map<String, Object> data;
+
 	
 
 }

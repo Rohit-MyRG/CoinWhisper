@@ -6,6 +6,7 @@ import com.couchbase.client.java.json.JsonObject;
 import com.personal.financeManager.documentProcessor.models.DataEntityBean;
 import com.personal.financeManager.documentProcessor.models.SuccessResponse;
 import com.personal.financeManager.documentProcessor.services.DataEntityService;
+import com.personal.financeManager.exceptions.PayloadValidationException;
 
 @Service
 public class DataEntityServiceImpl implements DataEntityService{
@@ -13,9 +14,14 @@ public class DataEntityServiceImpl implements DataEntityService{
 	@Override
 	public SuccessResponse createDataEntity(DataEntityBean dataEntityBean) {
 		
+		if (dataEntityBean.getDataEntityID() == null || dataEntityBean.getDataEntityID().trim().isEmpty()) {
+            dataEntityBean.setDataEntityID(Long.toString(System.currentTimeMillis()));
+        }
+		
 		JSONObject data = new JSONObject(dataEntityBean.getData());
 		
-		String effectiveFromTimestamp = Long.toString(System.currentTimeMillis());
+		String DataEntityID = Long.toString(System.currentTimeMillis());
+		String effectiveFromTimestamp = DataEntityID;
 		String documentType = "2";
 		String version = "000";
 		String documentID = String.format("%s:%s:%s:%s:%s", documentType, dataEntityBean.getFeatureID(),
