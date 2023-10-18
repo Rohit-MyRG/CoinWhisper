@@ -31,7 +31,6 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         JSONObject data = new JSONObject(featureTemplateBean.getData());
         
         // #3) Generate DocumentID
-       
         String effectiveFromTimestamp = Long.toString(System.currentTimeMillis());
         String documentType = "1"; // 1 is for Template documents
         String version = "000"; // Replace with the appropriate version
@@ -53,7 +52,6 @@ public class FeatureTemplateServiceImpl implements FeatureTemplateService {
         document.put("Header", header);
         document.put("Data", data);
 
-        
         // #5) Convert JSONObject to couchbase JsonObject
         JsonObject cbDoc = JsonObject.from(document.toMap());
         System.out.println("Final doc: "+cbDoc.toString());
