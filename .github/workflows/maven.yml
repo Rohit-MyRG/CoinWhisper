@@ -15,7 +15,7 @@ on:
     branches: [ "dev" ]
 
 jobs:
-  build and Deploy:
+  buildnDeploy:
     runs-on: ubuntu-latest
     timeout-minutes: 30
 
