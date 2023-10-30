@@ -31,6 +31,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B package --file pom.xml
   deploy: 
+    needs: build
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 30
