@@ -1,11 +1,10 @@
 package com.personal.financeManager.documentProcessor.repository;
 
-import java.util.List;
-
-import com.couchbase.client.java.json.JsonObject;
+import org.bson.Document;
+import org.json.JSONObject;
 
 public interface FeatureTemplateRepository {
-    public void createFeatureTemplate(String documentId, JsonObject jsonObject);
+    public void createFeatureTemplate(JSONObject jsonObject);
 
-    public List<JsonObject> getFeatureTemplate(String featureId, String featureVariantID);
+    public Document getFeatureTemplate(String featureId, String featureVariantID);
 }

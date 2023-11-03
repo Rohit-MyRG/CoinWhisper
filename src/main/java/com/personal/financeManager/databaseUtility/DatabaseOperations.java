@@ -1,25 +1,24 @@
 package com.personal.financeManager.databaseUtility;
 
-import java.util.List;
-
-import com.couchbase.client.java.json.JsonObject;
+import org.bson.Document;
+import org.json.JSONObject;
 
 public interface DatabaseOperations {
 
     /**
      * Create template document
      * 
-     * @param documentId
      * @param jsonObject
      */
-    public void createFeatureTemplateByDocumentId(String documentId, JsonObject jsonObject);
+    public void createFeatureTemplateByDocumentId(JSONObject jsonObject);
 
     /**
      * It will get the query as a string and return the result in list of
-     * JsonObject.
+     * JSONObject.
      * 
-     * @param query
-     * @return List<JsonObject>
+     * @param featureId
+     * @param featureVariantID
+     * @return Document
      */
-    public List<JsonObject> executeQuery(String query);
+    public Document executeQuery(String featureId, String featureVariantID);
 }

@@ -1,45 +1,85 @@
 package com.personal.financeManager.databaseUtility.impl;
 
-import java.time.Duration;
-import java.util.List;
-
+import org.bson.Document;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.couchbase.client.java.Bucket;
-import com.couchbase.client.java.Cluster;
-import com.couchbase.client.java.json.JsonObject;
-import com.couchbase.client.java.kv.InsertOptions;
-import com.couchbase.client.java.kv.MutationResult;
-import com.couchbase.client.java.query.QueryOptions;
-import com.couchbase.client.java.query.QueryResult;
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.result.InsertOneResult;
 import com.personal.financeManager.databaseUtility.DatabaseConnection;
 import com.personal.financeManager.databaseUtility.DatabaseOperations;
 
 @Component
 public class DatabaseOperationsImpl implements DatabaseOperations {
 
-    @Value("${couchbase.resource-bucket-name}")
-    private String resourceBucketName;
-    
-    @Value("${couchbase.transaction-bucket-name}")
-    private String transactionBucketName;
+    @Value("${mongodb.resources-database-name}")
+    private String resourcesDatabaseName;
+
+    @Value("${mongodb.features-database-name}")
+    private String featuresDatabaseName;
 
     @Autowired
     DatabaseConnection databaseConnection;
 
-    public void createFeatureTemplateByDocumentId(String documentId, JsonObject jsonObject) {
-        Cluster cluster = databaseConnection.getConnection();
-        Bucket bucket = cluster.bucket(resourceBucketName);
-        MutationResult mutationResult = bucket.defaultCollection().insert(documentId, jsonObject,
-                InsertOptions.insertOptions().timeout(Duration.ofMinutes(5)));
-        System.out.println("Mutation Result: "+mutationResult.mutationToken());
+    public void createFeatureTemplateByDocumentId(JSONObject jsonObject) {
+
+        // 1 Database Connection
+        MongoClient mongoClient = databaseConnection.getConnection();
+
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(featuresDatabaseName);
+
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("default");
+
+        // 2 Convert JSON to MongoDB Document
+        String documentId = jsonObject.getJSONObject("Header").getString("DocumentID");
+
+        jsonObject.put("_id", documentId);
+
+        Document doc = Document.parse(jsonObject.toString());
+
+        InsertOneResult insertOneResult = mongoCollection.insertOne(doc);
+
+        // 3 Print Inserted Document
+        System.out.println("Insert One Result: " + insertOneResult.getInsertedId());
+
+        // 4 Create Collection in Resources Database
+        String featureId = jsonObject.getJSONObject("Header").getString("FeatureID");
+
+        mongoDatabase = mongoClient.getDatabase(resourcesDatabaseName);
+
+        try {
+            mongoDatabase.createCollection(featureId);
+            System.out.println("Collection Created");
+
+        } catch (Exception e) {
+            System.out.println("Collection Exist " + e);
+
+        }
+
     }
 
-    public List<JsonObject> executeQuery(String query) {
-        Cluster cluster = databaseConnection.getConnection();
-        QueryResult result = cluster.query(query,QueryOptions.queryOptions().timeout(Duration.ofMinutes(20)));
-        List<JsonObject> list = result.rowsAsObject();   
-        return list;	
-    } 
+    public Document executeQuery(String featureId, String featureVariantID) {
+
+        // 1 Database Connection
+        MongoClient mongoClient = databaseConnection.getConnection();
+
+        MongoDatabase mongoDatabase = mongoClient.getDatabase(featuresDatabaseName);
+
+        MongoCollection<Document> mongoCollection = mongoDatabase.getCollection("default");
+
+        // 2 Execute Query on Database
+        Document document = mongoCollection.find(Filters.and(Filters.eq("Header.FeatureID", featureId),
+                Filters.eq("Header.FeatureVariantID", featureVariantID))).first();
+
+        // 3 Print Query Result
+        System.out.println(document);
+
+        return document;
+
+    }
 }
