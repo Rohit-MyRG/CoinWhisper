@@ -14,62 +14,63 @@ import com.personal.financeManager.exceptions.DocumentAlreadyExistsException;
 @Service
 public class FeatureTemplateServiceImpl implements FeatureTemplateService {
 
-    @Autowired
-    FeatureTemplateRepository featureTemplateRepository;
+        @Autowired
+        FeatureTemplateRepository featureTemplateRepository;
 
-    @Override
-    public SuccessResponse createTemplate(FeatureTemplateBean featureTemplateBean) {
+        @Override
+        public SuccessResponse createTemplate(FeatureTemplateBean featureTemplateBean) {
 
-        // #1) Check does document already exist with the same featureID and
-        // featureVarientID.
-        Document ftDoc = featureTemplateRepository.getFeatureTemplate(featureTemplateBean.getFeatureID(),
-                featureTemplateBean.getFeatureVariantID());
-        if (ftDoc != null)
-            throw new DocumentAlreadyExistsException(
-                    "Provided feature template is already exist with featureID & featureVariantID "
-                            + featureTemplateBean.getFeatureID() + ":" + featureTemplateBean.getFeatureVariantID());
+                // #1) Check does document already exist with the same featureID and
+                // featureVarientID.
+                Document ftDoc = featureTemplateRepository.getFeatureTemplate(featureTemplateBean.getFeatureID(),
+                                featureTemplateBean.getFeatureVariantID());
+                if (ftDoc != null)
+                        throw new DocumentAlreadyExistsException(
+                                        "Provided feature template is already exist with featureID & featureVariantID "
+                                                        + featureTemplateBean.getFeatureID() + ":"
+                                                        + featureTemplateBean.getFeatureVariantID());
 
-        // #2) handle data section
-        JSONObject data = new JSONObject(featureTemplateBean.getData());
+                // #2) handle data section
+                JSONObject data = new JSONObject(featureTemplateBean.getData());
 
-        // #3) Generate DocumentID
-        String effectiveFromTimestamp = Long.toString(System.currentTimeMillis());
-        String documentType = "1"; // 1 is for Template documents
-        String version = "000"; // Replace with the appropriate version
-        String documentID = String.format("%s:%s:%s:%s", documentType, featureTemplateBean.getFeatureID(),
-                featureTemplateBean.getFeatureVariantID(), version);
+                // #3) Generate DocumentID
+                String effectiveFromTimestamp = Long.toString(System.currentTimeMillis());
+                String documentType = "1"; // 1 is for Template documents
+                String version = "000"; // Replace with the appropriate version
+                String documentID = String.format("%s:%s:%s:%s", documentType, featureTemplateBean.getFeatureID(),
+                                featureTemplateBean.getFeatureVariantID(), version);
 
-        // #4) Handle all Header fields
-        JSONObject header = new JSONObject();
-        header.put("DocumentType", documentType);
-        header.put("FeatureID", featureTemplateBean.getFeatureID());
-        header.put("FeatureVariantID", featureTemplateBean.getFeatureVariantID());
-        header.put("Version", version);
-        header.put("DocumentID", documentID);
-        header.put("EffectiveFromTimestamp", effectiveFromTimestamp);
-        header.put("EffectiveTillTimestamp", "");
-        header.put("Status", "1");
+                // #4) Handle all Header fields
+                JSONObject header = new JSONObject();
+                header.put("DocumentType", documentType);
+                header.put("FeatureID", featureTemplateBean.getFeatureID());
+                header.put("FeatureVariantID", featureTemplateBean.getFeatureVariantID());
+                header.put("Version", version);
+                header.put("DocumentID", documentID);
+                header.put("EffectiveFromTimestamp", effectiveFromTimestamp);
+                header.put("EffectiveTillTimestamp", "");
+                header.put("Status", "1");
 
-        JSONObject document = new JSONObject();
-        document.put("Header", header);
-        document.put("Data", data);
+                JSONObject document = new JSONObject();
+                document.put("Header", header);
+                document.put("Data", data);
 
-        // #5) Print Final Document Result
-        System.out.println("Final doc: " + document.toString())
+                // #5) Print Final Document Result
+                System.out.println("Final doc: " + document.toString());
 
-        // #6) call databaseOperations to create Template
-        featureTemplateRepository.createFeatureTemplate(document);
+                // #6) call databaseOperations to create Template
+                featureTemplateRepository.createFeatureTemplate(document);
 
-        // #7) Make success response
-        SuccessResponse response = new SuccessResponse();
-        response.setFeatureID(featureTemplateBean.getFeatureID());
-        response.setFeatureVariantID(featureTemplateBean.getFeatureVariantID());
-        response.setDocumentID(documentID);
-        response.setMessage("Document Inserted");
+                // #7) Make success response
+                SuccessResponse response = new SuccessResponse();
+                response.setFeatureID(featureTemplateBean.getFeatureID());
+                response.setFeatureVariantID(featureTemplateBean.getFeatureVariantID());
+                response.setDocumentID(documentID);
+                response.setMessage("Document Inserted");
 
-        System.out.println("Response : " + response.toString());
+                System.out.println("Response : " + response.toString());
 
-        return response;
-    }
+                return response;
+        }
 
 }
